@@ -1,0 +1,19 @@
+FROM node:16-alpine as build
+LABEL authors="hsaiz@ikerlan.es"
+WORKDIR /app
+COPY ui/package.json package.json
+RUN npm install
+COPY ui .
+RUN npm run build
+
+FROM golang:1.19
+WORKDIR /app
+COPY backend .
+ENV GOSUMDB=off
+RUN CGO_ENABLED=0 go build -mod=vendor -o vDMS main.go 
+
+FROM alpine:3.14
+WORKDIR /app
+COPY --from=0 /app/build build
+COPY --from=1 /app/vDMS vDMS
+CMD ["./vDMS"]

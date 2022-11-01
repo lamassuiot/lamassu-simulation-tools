@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  vdevice:
+    image: lamassuiot/lamassuiot-virtual-device:2.0.0
+    environment:
+      VDMS_ADDRESS: http://vdms:7002
+      LAMASSU_GATEWAY: ${LAMASSU_GATEWAY}
+      AWS_IOT_ENDPOINT: ${AWS_IOT_ENDPOINT}
+      AWS_IOT_CA: /app/aws-iotcore-ca.crt
+      AZURE_IOT_HUB_ENDPOINT: ${AZURE_IOT_HUB_ENDPOINT}
+      AZURE_DPS_ENDPOINT: ${AZURE_DPS_ENDPOINT}
+      AZURE_SCOPE_ID: ${AZURE_SCOPE_ID}
+      AZURE_IOT_HUB_CA: /app/azure-iothub-ca.crt
+    ports:
+      - "7001:7001"
+  vdms:
+    image: lamassuiot/lamassuiot-virtual-dms:2.0.0
+    environment:
+      LAMASSU_GATEWAY: ${LAMASSU_GATEWAY}
+    ports:
+      - "7002:7002"
