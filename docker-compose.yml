@@ -14,9 +14,15 @@ services:
       AZURE_IOT_HUB_CA: /app/azure-iothub-ca.crt
     ports:
       - "7001:7001"
+    external_links:
+      - "api-gateway:${DOMAIN}"
+      
   vdms:
     image: lamassuiot/lamassuiot-virtual-dms:2.0.0
     environment:
       LAMASSU_GATEWAY: ${LAMASSU_GATEWAY}
     ports:
       - "7002:7002"
+    external_links:
+      - "api-gateway:${DOMAIN}"
+      - "api-gateway:auth.${DOMAIN}"
